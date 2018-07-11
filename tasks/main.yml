@@ -3,6 +3,9 @@
 - name: Set ec2 facts
   include: facts.yml
 
+- name: Configure our timezone
+  include: timezone.yml
+
 - name: Configure system hostname
   include: hostname.yml
 
@@ -11,3 +14,4 @@
 
 - name: Find and mount our ebs volumes
   include: volumes.yml
+  when: mount_point|default(False)

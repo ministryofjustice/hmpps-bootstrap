@@ -7,10 +7,12 @@
 - name: Gather network facts
   shell: "curl -s {{ ec2_url }}/local-ipv4"
   register: remote_network_output
+  warn: false
 
 - name: Gather instance facts
   shell: "curl -s {{ ec2_url }}/instance-id | sed -e 's/^i-//'"
   register: instance_output
+  warn: false
 
 - name: Set network and instance facts
   set_fact:
