@@ -1,0 +1,7 @@
+---
+
+- name: Create bash-prompt.sh
+  template:
+    src: "{{ lookup('file', 'bash-prompt.sh'}}"
+    dest: /etc/profile.d/bash-prompt.sh
+  become: true
