@@ -3,6 +3,9 @@
 - name: Set ec2 facts
   include: facts.yml
 
+- name: Enable epel repository
+  include: epel-repository.yml
+
 - name: Configure our timezone
   include: timezone.yml
 
@@ -12,6 +15,10 @@
 - name: Configure bash prompt
   include: bash-prompt.yml
 
-- name: Find and mount our ebs volumes
+- name: Find and mount our ebs volume if specified
   include: volumes.yml
   when: mount_point|default(False)
+
+- name: Install docker and compose if needed
+  include: docker.yml
+  when: ansible_env.HAS_DOCKER|default(False)
