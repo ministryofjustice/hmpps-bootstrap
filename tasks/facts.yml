@@ -9,7 +9,7 @@
   register: remote_network_output
 
 - name: Gather instance facts
-  shell: "curl -s {{ ec2_url }} /instance-id | sed -e 's/^i-//'"
+  shell: "curl -s {{ ec2_url }}/instance-id | sed -e 's/^i-//'"
   register: instance_output
 
 - name: Set network and instance facts

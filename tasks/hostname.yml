@@ -12,8 +12,21 @@
         hostname: "{{ ansible_env.HMPPS_ROLE }}-{{ instance_name }}"
   when: ansible_env.HMPPS_ROLE|default(False)
 
+- name: Remove the hostname if it exists
+  lineinfile:
+    path: /etc/hosts
+    regexp: "{{ hostname }}"
+    state: absent
+  ignore_errors: true
+  become: true
+
 - name: Set data in hosts file
-  shell: "echo {{ remote_ip }} {{ hostname }} {{ lookup('env', 'HMPPS_ROLE') }} >> /etc/hosts"
+  lineinfile:
+    path: /etc/hosts
+    line: "{{ remote_ip }} {{ hostname }} {{ lookup('env', 'HMPPS_ROLE') }}"
+    owner: root
+    group: root
+    mode: 0644
   become: true
 
 - name: Configure hostname
@@ -26,6 +39,6 @@
 
 - name: Restart rsyslogd
   service:
-    name: rsyslogd
+    name: rsyslog
     state: restarted
   become: true

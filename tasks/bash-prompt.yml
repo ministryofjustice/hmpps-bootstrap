@@ -2,6 +2,7 @@
 
 - name: Create bash-prompt.sh
   template:
-    src: "{{ lookup('file', 'bash-prompt.sh'}}"
+    src: files/bash-prompt.sh.j2
     dest: /etc/profile.d/bash-prompt.sh
+    force: true
   become: true
