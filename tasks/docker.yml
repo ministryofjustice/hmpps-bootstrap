@@ -1,0 +1,46 @@
+---
+
+- name: Install docker pre-requisites
+  yum:
+    name: "{{ item }}"
+    state: latest
+  become: true
+  with_items:
+    - yum-utils
+    - device-mapper-persistent-data
+    - lvm2
+
+- name: Remove existing docker install
+  package:
+    name: docker
+    state: absent
+
+- name: Install docker from amazon linux extras
+  command: amazon-linux-extras install docker
+  become: true
+
+- name: Get our user with UID of 1000
+  getent:
+    database: passwd
+    key: 1000
+  register: uid_data
+
+- name: Allow our user to run docker without sudo
+  user:
+    name: "{{ uid_data.ansible_facts.getent_passwd.keys().0 }}"
+    groups: docker
+    append: true
+  become: true
+
+
+- name: Install docker-compose binary
+  get_url:
+    url: https://github.com/docker/compose/releases/download/1.21.2/docker-compose-Linux-x86_64
+    dest: /usr/bin/docker-compose
+    mode: +x
+  become: true
+
+- name: Start docker service
+  service:
+    name: docker
+    state: started

@@ -1,0 +1,21 @@
+---
+
+- name: Set facts
+  set_fact:
+    ec2_url: "http://169.254.169.254/latest/meta-data"
+
+- name: Gather network facts
+  shell: "curl -s {{ ec2_url }}/local-ipv4"
+  register: remote_network_output
+  warn: false
+
+- name: Gather instance facts
+  shell: "curl -s {{ ec2_url }}/instance-id | sed -e 's/^i-//'"
+  register: instance_output
+  warn: false
+
+- name: Set network and instance facts
+  set_fact:
+    instance_name: "{{ instance_output.stdout }}"
+    long_instance_name: "i-{{ instance_output.stdout }}"
+    remote_ip: "{{ remote_network_output.stdout }}"

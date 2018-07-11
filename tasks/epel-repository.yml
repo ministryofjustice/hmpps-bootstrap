@@ -1,0 +1,24 @@
+---
+
+- name: Set facts
+  set_fact:
+    epel_repo_file: "/etc/yum.repos.d/epel.repo"
+    epel_repo_url: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm"
+    epel_gpg_url: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7"
+
+- name: determine if EPEL repo is already configured
+  stat:
+    path: "{{ epel_repo_file }}"
+  register: repo
+
+- block:
+  - name: import EPEL GPG key
+    rpm_key:
+      key: "{{ epel_gpg_url }}"
+      state: present
+
+  - name: install EPEL repository
+    yum:
+      name: "{{ epel_repo_url }}"
+      state: present
+  when: not repo.stat.exists

@@ -1,0 +1,8 @@
+---
+
+- name: Create bash-prompt.sh
+  template:
+    src: templates/bash-prompt.sh.j2
+    dest: /etc/profile.d/bash-prompt.sh
+    force: true
+  become: true

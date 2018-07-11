@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+if [[ ${EUID} == 0 ]]
+then
+        PS1="\[\033[01;31m\]${USER}@{{ remote_ip }} {{ lookup('env', 'HMPPS_ROLE') }}:{{ lookup('env', 'HMPPS_ENVIRONMENT') }}\[\033[0m\]:\w # "
+else
+        PS1="\[\033[01;34m\]${USER}@{{ remote_ip }} {{ lookup('env', 'HMPPS_ROLE') }}:{{ lookup('env', 'HMPPS_ENVIRONMENT') }}\[\033[0m\]:\w $ "
+fi

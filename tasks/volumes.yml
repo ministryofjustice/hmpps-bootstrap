@@ -1,0 +1,30 @@
+---
+
+- name: Create our mountpoint
+  file:
+    path: "{{ mount_point }}"
+    state: directory
+  become: true
+  ignore_errors: true
+
+- name: Create our filesystem
+  filesystem:
+    fstype: xfs
+    dev: "{{ device_name }}"
+  become: true
+
+- name: Remove our mapping from fstab if it exists
+  mount:
+    path: "{{ device_name }}"
+    state: absent
+  become: true
+  ingore_errors: true
+
+- name: Create our mount in fstab
+  mount:
+    path: "{{ mount_point }}"
+    src: "{{ device_name }}"
+    fstype: xfs
+    backup: true
+    state: mounted
+  become: true

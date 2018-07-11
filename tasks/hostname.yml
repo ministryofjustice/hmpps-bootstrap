@@ -1,0 +1,44 @@
+---
+
+- block:
+    - name: Set hostname fact
+      set_fact:
+        hostname: "{{ instance_name }}"
+  when: not ansible_env.HMPPS_ROLE|default(False)
+
+- block:
+    - name: Set hostname fact
+      set_fact:
+        hostname: "{{ ansible_env.HMPPS_ROLE }}-{{ instance_name }}"
+  when: ansible_env.HMPPS_ROLE|default(False)
+
+- name: Remove the hostname if it exists
+  lineinfile:
+    path: /etc/hosts
+    regexp: "{{ hostname }}"
+    state: absent
+  ignore_errors: true
+  become: true
+
+- name: Set data in hosts file
+  lineinfile:
+    path: /etc/hosts
+    line: "{{ remote_ip }} {{ hostname }} {{ lookup('env', 'HMPPS_ROLE') }}"
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+
+- name: Configure hostname
+  shell: "echo {{ hostname }} > /etc/hostname"
+  become: true
+
+- name: Load new hostname
+  shell: "hostname {{ hostname }}"
+  become: true
+
+- name: Restart rsyslogd
+  service:
+    name: rsyslog
+    state: restarted
+  become: true

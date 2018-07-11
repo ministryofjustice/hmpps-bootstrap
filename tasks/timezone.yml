@@ -1,0 +1,5 @@
+---
+
+- name: Configure our timezone
+  command: cp /usr/share/zoneinfo/Europe/London /etc/localtime
+  become: true
