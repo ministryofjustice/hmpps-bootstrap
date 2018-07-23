@@ -12,12 +12,39 @@
 
 - name: Remove existing docker install
   package:
-    name: docker
+    name: "{{ item }}"
     state: absent
+  with_items:
+    - docker
+    - docker-client
+    - docker-client-latest
+    - docker-common
+    - docker-latest
+    - docker-latest-logrotate
+    - docker-logrotate
+    - docker-selinux
+    - docker-engine-selinux
+    - docker-engine
+  ignore_errors: true
 
-- name: Install docker from amazon linux extras
-  command: amazon-linux-extras install docker
-  become: true
+- name: Import Docker CE repository gpg key
+  rpm_key:
+    key: https://download.docker.com/linux/centos/gpg
+    state: present
+
+- name: Add Docker CE repository
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docker-ce.repo
+    force: yes
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Install "docker-ce"
+  package:
+    name: "docker-ce"
+    state: present
 
 - name: Get our user with UID of 1000
   getent:
