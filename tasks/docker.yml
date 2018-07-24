@@ -10,14 +10,48 @@
     - device-mapper-persistent-data
     - lvm2
 
-- name: Remove existing docker install
-  package:
-    name: docker
-    state: absent
+#- name: Remove existing docker install
+#  package:
+#    name: "{{ item }}"
+#    state: absent
+#  with_items:
+#    - docker
+#    - docker-client
+#    - docker-client-latest
+#    - docker-common
+#    - docker-latest
+#    - docker-latest-logrotate
+#    - docker-logrotate
+#    - docker-selinux
+#    - docker-engine-selinux
+#    - docker-engine
+#  ignore_errors: true
+#
+#- name: Install "docker"
+#  package:
+#    name: "docker"
+#    state: present
 
-- name: Install docker from amazon linux extras
-  command: amazon-linux-extras install docker
-  become: true
+- name: Ensure the group ec2-service exists
+  group:
+    name: ec2-service
+    gid: 1000
+    state: present
+
+- name: Ensure our ec2-service user exists
+  user:
+    name: ec2-service
+    uid: 1000
+    groups: ec2-service
+    state: present
+
+- name: Ensure our ec2-user is in the ec2-service group
+  user:
+    name: ec2-user
+    groups: ec2-service
+    append: yes
+    state: present
+
 
 - name: Get our user with UID of 1000
   getent:
