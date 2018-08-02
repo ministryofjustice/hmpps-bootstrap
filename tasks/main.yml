@@ -22,3 +22,8 @@
 - name: Install docker and compose if needed
   include: docker.yml
   when: ansible_env.HAS_DOCKER|default(False)
+
+- name: Self register ourselves on route53
+  include: route53-registration.yml
+  when: ansible_env.SELF_REGISTER|default(False)
+
