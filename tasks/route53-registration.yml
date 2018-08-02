@@ -1,0 +1,26 @@
+---
+
+- name: Get instance facts
+  ec2_facts:
+  register: instance_facts
+
+- name: set facts
+  set_facts:
+    instance_ip: "{{ instance_facts.ansible_facts.ansible_ec2_local_ipv4 }}"
+    fqdn: "{{ lookup('env', 'HMPPS_FQDN') or '' }}"
+    domain: "{{ lookup('env', 'HMPPS_DOMAIN') or '' }}"
+
+- block:
+
+  - name: Self register our instance in route53
+    route53:
+      state: present
+      record: "{{ fqdn }}"
+      type: A
+      value: "{{ instance_ip }}"
+      ttl: 300
+      zone: "{{ domain }}"
+    ignore_errors: true #We don't want this to hard fail
+  when:
+    - fqdn != ''
+    - domain != ''
