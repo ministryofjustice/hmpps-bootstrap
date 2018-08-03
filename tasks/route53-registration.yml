@@ -20,6 +20,7 @@
       value: "{{ instance_ip }}"
       ttl: 300
       zone: "{{ domain }}"
+      private_zone: true
     ignore_errors: true #We don't want this to hard fail
   when:
     - fqdn != ''
