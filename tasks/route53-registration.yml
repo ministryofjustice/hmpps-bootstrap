@@ -5,7 +5,7 @@
   register: instance_facts
 
 - name: set facts
-  set_facts:
+  set_fact:
     instance_ip: "{{ instance_facts.ansible_facts.ansible_ec2_local_ipv4 }}"
     fqdn: "{{ lookup('env', 'HMPPS_FQDN') or '' }}"
     domain: "{{ lookup('env', 'HMPPS_DOMAIN') or '' }}"
@@ -20,6 +20,7 @@
       value: "{{ instance_ip }}"
       ttl: 300
       zone: "{{ domain }}"
+      private_zone: true
     ignore_errors: true #We don't want this to hard fail
   when:
     - fqdn != ''
