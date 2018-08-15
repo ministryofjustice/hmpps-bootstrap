@@ -1,0 +1,10 @@
+---
+
+- name: Install some required packages
+  yum:
+  state: latest
+  name: "{{ item }}"
+  with_items:
+    - vim
+    - jq
+    - awscli

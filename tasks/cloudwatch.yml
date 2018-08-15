@@ -1,0 +1,25 @@
+---
+
+- name: Create our template config file
+  template:
+    src: templates/awslogs.conf.j2
+    dest: /tmp/awslogs.conf
+    force: true
+  become: true
+
+- name: Fetch our cloudwatch logs installer
+  get_url:
+    url: https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py
+    dest: /tmp/awslogs-agent-setup.py
+    mode: 0777
+
+- name: Run our installer
+  shell: "./tmp/awslogs-agent-setup.py -n -r{{ region }} -c /tmp/awslogs.conf"
+
+- name: Remove our files
+  file:
+    state: absent
+    name: "/tmp/{{ item }}"
+  with_item:
+    - awslogs.conf
+    - awslogs-agent-setup.py
