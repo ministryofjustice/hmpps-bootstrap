@@ -6,11 +6,18 @@
 - name: Enable epel repository
   include: epel-repository.yml
 
+- name: Install some base packages
+  include: packages.yml
+
 - name: Configure our timezone
   include: timezone.yml
 
 - name: Configure system hostname
   include: hostname.yml
+
+- name: Set up cloudwatch logging
+  include: cloudwatch.yml
+  when: cldwatch_log_group|default(False)
 
 - name: Configure bash prompt
   include: bash-prompt.yml
