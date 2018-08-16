@@ -14,12 +14,12 @@
     mode: 0777
 
 - name: Run our installer
-  shell: "./tmp/awslogs-agent-setup.py -n -r{{ region }} -c /tmp/awslogs.conf"
+  shell: "python /tmp/awslogs-agent-setup.py -n -r{{ region }} -c /tmp/awslogs.conf"
 
 - name: Remove our files
   file:
     state: absent
     name: "/tmp/{{ item }}"
-  with_item:
+  with_items:
     - awslogs.conf
     - awslogs-agent-setup.py
