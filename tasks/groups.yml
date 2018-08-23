@@ -1,0 +1,7 @@
+---
+
+- name: Manage our groups
+  include: manage_groups.yml
+  with_items: groups
+  loop_control:
+    loop_var: group

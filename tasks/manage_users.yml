@@ -1,0 +1,26 @@
+---
+
+- block:
+
+    - name: Create user
+      user:
+        name: "{{ user.name }}"
+        groups: "{{ user.groups|default('~') }}"
+        shell: "{{ user.shell|default('/bin/bash') }}"
+        state: present
+
+    - name: Create authorized key entry if key is present
+      authorized_key:
+        name: "{{ user.name }}"
+        key: "{{ user.key }}"
+        state: present
+      when: user.key|default(false)
+
+  when: user.state|default(false) == 'present'
+
+- block:
+    - name: Remove user
+      user:
+        name: "{{ user.name }}"
+        state: absent
+  when: user.state|default('false') != 'present'

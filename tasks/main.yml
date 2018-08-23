@@ -22,6 +22,14 @@
 - name: Configure bash prompt
   include: bash-prompt.yml
 
+- name: Ensure extra groups are set up
+  include: groups.yml
+  when: groups|default(false)
+
+- name: Set up users when defined
+  include: users.yml
+  when: users|default(false)
+
 - name: Find and mount our ebs volume if specified
   include: volumes.yml
   when: mount_point|default(False)

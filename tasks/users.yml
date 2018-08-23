@@ -1,0 +1,7 @@
+---
+
+- name: Manage our users
+  include: manage_users.yml
+  with_items: users
+  loop_control:
+    loop_var: user

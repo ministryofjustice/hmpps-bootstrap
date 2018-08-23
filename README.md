@@ -34,3 +34,30 @@ License
 
 MIT
 
+Example user and group meta-data
+--------------------------------
+```yaml
+
+- users:
+      ## create joe foo with group membership and a ssh-key in a remote location
+    - name: joe
+      state: present
+      groups: admin, wheel, joe
+      key: http://my.pub.key.location
+      shell: /bin/sh
+      ## Create user jenny using defaults and no key
+    - name: jenny
+      state: present
+      ## Remove user test
+    - name: test
+      state: absent
+      
+- groups:
+      ## create wheel group
+    - name: wheel
+      state: present
+      ## remove admin group
+    - name: admin
+      state: absent
+```
+

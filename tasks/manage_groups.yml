@@ -1,0 +1,16 @@
+---
+
+- block:
+    - name: Ensure group  exists
+      group:
+        name: "{{ group.name }}"
+        state: present
+  when: group.state|default(false) == 'present'
+
+- block:
+    - name: Ensure group doesn't exist
+      group:
+        name: "{{ group.name }}"
+        state: absent
+  when: group.state|default(false) != 'present'
+
