@@ -24,6 +24,7 @@
 
 - name: Create our swapfile
   include: create-swap-file.yml
+  when: ansible_env.CONFIGURE_SWAP|default(False)
 
 - name: Find and mount our ebs volume if specified
   include: volumes.yml

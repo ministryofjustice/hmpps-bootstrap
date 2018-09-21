@@ -11,6 +11,7 @@ Role Variables
  - `device_name` = the volume to mount
  - `cldwatch_log_group` = string, if exists will configure cloudwatch
  - `HAS_DOCKER` = env var to install docker and docker-compose
+ - `CONFIGURE_SWAP` = env var to enable swapfile config
  - `max_swapfile_size` = size of swapfile in kb optional, defaults to 2GB
  - `swapfile` =  path to mount our swapfile, optional default `/swap`
 
