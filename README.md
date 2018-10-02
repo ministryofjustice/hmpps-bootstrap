@@ -14,6 +14,8 @@ Role Variables
  - `CONFIGURE_SWAP` = env var to enable swapfile config
  - `max_swapfile_size` = size of swapfile in kb optional, defaults to 2GB
  - `swapfile` =  path to mount our swapfile, optional default `/swap`
+ - `enable_sudoers` = if we want to allow passwordless sudo, defaults to true
+ - `sudoer_groups` = list of groups to enable defaults to webops
 
 Example Playbook
 ----------------

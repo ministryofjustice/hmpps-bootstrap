@@ -1,0 +1,4 @@
+# Members of the admin group may gain root privileges
+%{{ group_name }} ALL=(ALL) ALL
+
+Defaults  use_pty log_host, log_year, logfile="/var/log/{{ group_name }}.sudo.log"
