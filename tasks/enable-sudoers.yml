@@ -1,0 +1,11 @@
+---
+
+- name: Create our sudoers.d file
+  template:
+    src: templates/sudoers.d.j2
+    dest: "/etc/sudoers.d/{{ group_name }}"
+    owner: root
+    mode: 0440
+  with_items: "{{ sudoer_groups| default['webops'] }}"
+  loop_control:
+    loop_var: group_name
