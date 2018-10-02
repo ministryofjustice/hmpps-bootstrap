@@ -27,7 +27,7 @@
   when: ansible_env.CONFIGURE_SWAP|default(False)
 
 - name: Enable passwordless sudo for predifined groups
-  include: create-sudoers.yml
+  include: enable-sudoers.yml
   when: enable_sudoers|default(true)
 
 - name: Find and mount our ebs volume if specified
