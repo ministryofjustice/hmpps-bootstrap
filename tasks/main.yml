@@ -42,3 +42,7 @@
   include: route53-registration.yml
   when: ansible_env.SELF_REGISTER|default(False)
 
+- name: Enable some maintenance crons
+  include: crons.yml
+
+
