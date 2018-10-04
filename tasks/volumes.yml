@@ -5,7 +5,6 @@
     path: "{{ mount_point }}"
     state: directory
   become: true
-  ignore_errors: true
 
 - name: Create our filesystem
   filesystem:
@@ -18,7 +17,6 @@
     path: "{{ device_name }}"
     state: absent
   become: true
-  ingore_errors: true
 
 - name: Create our mount in fstab
   mount:
