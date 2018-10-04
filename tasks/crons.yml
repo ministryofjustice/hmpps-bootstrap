@@ -1,0 +1,20 @@
+---
+
+- name: Create cron to periodically clean the yum cache
+  cron:
+    name: "Clean YUM caches"
+    job: "yum clean all > /dev/null 2>&1"
+    hour: 2
+    minute: 30
+
+- name: Create update users script
+  template:
+    src: templates/update_users.sh.j2
+    dest: "/usr/bin/update_users"
+    mode: u+x
+
+- name: Create cron to update users
+  cron:
+    name: "Reapply our users to the system to ensure we're synched to the latest from remote"
+    job: "update_users"
+    special_time: hourly

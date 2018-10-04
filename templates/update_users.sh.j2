@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set +x
+
+cd /tmp
+wget https://raw.githubusercontent.com/ministryofjustice/hmpps-delius-ansible/master/group_vars/{{ remote_user_filename|default('bastion') }} -O /tmp/users.yml
+
+cat << EOF > /tmp/requirements.yml
+---
+
+- name: users
+  src: singleplatform-eng.users
+EOF
+
+cat << EOF > /tmp/playbook.yml
+---
+
+- hosts: localhost
+  vars_files:
+   - /tmp/users.yml
+  roles:
+     - users
+EOF
+
+ansible-galaxy install -r requirements.yml -f
+ansible-playbook playbook.yml
+rm -rf users.yml requirements.yml playbook.yml /tmp/.ansible

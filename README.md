@@ -16,6 +16,7 @@ Role Variables
  - `swapfile` =  path to mount our swapfile, optional default `/swap`
  - `enable_sudoers` = if we want to allow passwordless sudo, defaults to true
  - `sudoer_groups` = list of groups to enable defaults to webops
+ - `remote_user_filename` = filename in which we store our users, groups and public keys for ssh access
 
 Example Playbook
 ----------------
