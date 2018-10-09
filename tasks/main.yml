@@ -30,9 +30,18 @@
   include: enable-sudoers.yml
   when: enable_sudoers|default(true)
 
-- name: Find and mount our ebs volume if specified
-  include: volumes.yml
+- block:
+    - name: Find and mount our ebs volume if specified
+      include: volumes.yml
   when: mount_point|default(False)
+
+- block:
+    - name: Find and mount our ebs volumes if specified
+      include: multiple-volumes.yml
+      with_items: "{{ mount_points }}"
+      loop_control:
+        loop_var: mount
+  when: mount_points|default(False)
 
 - name: Install docker and compose if needed
   include: docker.yml
@@ -44,5 +53,3 @@
 
 - name: Enable some maintenance crons
   include: crons.yml
-
-
