@@ -1,0 +1,10 @@
+---
+
+- name: Set our mount facts
+  set_fact:
+    mount_point: "{{ mount.mount_point }}"
+    device_name: "{{ mount.device_name }}"
+    file_system_type: "{{ mount.file_system_type|default('xfs') }}"
+
+- name: Find and mount our ebs volume if specified
+  include: volumes.yml

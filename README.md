@@ -21,6 +21,23 @@ Role Variables
 Example Playbook
 ----------------
 
+Mount point example
+```yaml
+mount_point: # path we're mouting to
+device_name: # block device name
+file_system_type: # defaults to xfs
+```
+
+Multiple Mount point example
+```yaml
+mount_points:
+  - mount_point: # path we're mouting to
+    device_name: # block device name
+    file_system_type: # defaults to xfs
+  - mount_point: # path we're mouting to
+    device_name: # block device name
+    file_system_type: # defaults to xfs
+```
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
 ```yaml
