@@ -59,7 +59,6 @@
     append: true
   become: true
 
-
 - name: Install docker-compose binary
   get_url:
     url: https://github.com/docker/compose/releases/download/1.21.2/docker-compose-Linux-x86_64
@@ -67,7 +66,31 @@
     mode: +x
   become: true
 
+- name: Set our max_map_count
+  sysctl:
+    name: vm.max_map_count
+    value: 262144
+    state: present
+  become: true
+
+- name: Set our hard nofile ulimit
+  pam_limits:
+    domain: '*'
+    limit_type: hard
+    limit_item: nofile
+    value: 65536
+  become: true
+
+- name: Set our soft nofile ulimit
+  pam_limits:
+    domain: '*'
+    limit_type: soft
+    limit_item: nofile
+    value: 65536
+  become: true
+
 - name: Start docker service
   service:
     name: docker
     state: started
+  become: true
