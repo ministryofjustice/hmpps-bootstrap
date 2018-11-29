@@ -105,6 +105,19 @@
     value: 65536
   become: true
 
+- name: Ensure our docker data dir exists
+  file:
+    state: directory
+    path: "{{ docker_data_root|default('/srv/docker') }}"
+  become: true
+
+- name: Create our docker config file
+  template:
+    src: templates/docker_daemon.json.j2
+    dest: /etc/docker/daemon.json
+    force: true
+  become: true
+
 - name: Start docker service
   service:
     name: docker
