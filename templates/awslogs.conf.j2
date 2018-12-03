@@ -25,6 +25,8 @@ log_group_name = {{ cldwatch_log_group }}
 log_stream_name = {{ hostname }}/secure
 datetime_format = %b %d %H:%M:%S
 
+{% if ansible_env.HMPPS_ROLE is defined %}
+{%   if ansible_env.HMPPS_ROLE == 'alfresco' -%}
 [/var/log/alfresco]
 file = /var/log/alfresco
 log_group_name = {{ cldwatch_log_group }}
@@ -66,3 +68,5 @@ file = /usr/share/tomcat/logs/manager.*.log
 log_group_name = {{ cldwatch_log_group }}
 log_stream_name = {{ hostname }}/manager_log
 datetime_format = %b %d %H:%M:%S
+{%   endif -%}
+{% endif %}
