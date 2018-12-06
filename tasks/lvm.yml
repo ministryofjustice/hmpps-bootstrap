@@ -14,7 +14,7 @@
 - name: Create our lvg
   lvg:
     pvs: "{{ lvm_disks }}"
-    vg: nfs_store
+    vg: "{{ vg_name }}"
 
 - name: Create our logical volumes
   lvol:
