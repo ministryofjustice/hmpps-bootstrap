@@ -33,7 +33,7 @@
 - block:
     - name: Find and mount our ebs volume if specified
       include: volumes.yml
-  when: mount_point|default(False)
+  when: mount_point|default(false)
 
 - block:
     - name: Find and mount our ebs volumes if specified
@@ -42,6 +42,11 @@
       loop_control:
         loop_var: mount
   when: mount_points|default(False)
+
+- block:
+    - name: Configure out lvm disks if enabled
+      include: lvm.yml
+  when: lvm_mount_point|default(false)
 
 - name: Install docker and compose if needed
   include: docker.yml
