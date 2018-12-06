@@ -1,0 +1,35 @@
+---
+
+- name: Install our lvm tools
+  yum:
+    name: lvm2
+    state: present
+
+- name: Create our mount point
+  file:
+    path: "{{ lvm_mount_point }}"
+    state: directory
+  become: true
+
+- name: Create our lvg
+  lvg:
+    pvs: "{{ lvm_disks }}"
+    vg: nfs_store
+
+- name: Create our logical volumes
+  lvol:
+   vg: "{{ vg_name }}"
+   lv: "{{ lv_name }}"
+   size: "{{ lv_size }}"
+
+- name: Create our filesystem on our lvm
+  filesystem:
+    fstype: xfs
+    dev: "/dev/{{ vg_name }}/{{ lv_name }}"
+
+- name: Mount our lvm
+  mount:
+    name: "{{ lvm_mount_point }}"
+    fstype: xfs
+    src: "/dev/{{ vg_name }}/{{ lv_name }}"
+    state: mounted
