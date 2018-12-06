@@ -21,6 +21,7 @@ Role Variables
  - `vg_name` = volume group name
  - `lv_name` = logical volume name
  - `lv_size` = volume size see `man lvcreate`
+ - `lvm_disks` = list of disks to consume in lvm creation
 
 
 Example Playbook
@@ -50,6 +51,9 @@ vg_name: store
 lv_name: data
 lv_size: 1GB
 file_system: ext4 # optional defaults to xfs
+lvm_disks:
+ - /dev/xvdd
+ - /dev/sdb
 ```
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
