@@ -63,5 +63,30 @@ file = /usr/share/tomcat/logs/manager.*.log
 log_group_name = {{ cldwatch_log_group }}
 log_stream_name = {{ hostname }}/manager_log
 datetime_format = %b %d %H:%M:%S
+
+{%   endif -%}
+{%   if ansible_env.HMPPS_ROLE == 'ndelius' or ansible_env.HMPPS_ROLE == 'spg' or ansible_env.HMPPS_ROLE == 'interfaces' -%}
+
+[/u01/app/oracle/middleware/user_projects/domains/NDelius/NDeliusLog.log]
+file = /u01/app/oracle/middleware/user_projects/domains/NDelius/NDeliusLog.log
+log_group_name = {{ cldwatch_log_group }}
+log_stream_name = {{ hostname }}/ndelius_log
+datetime_format = %b %d %H:%M:%S
+
+[/u01/app/oracle/middleware/user_projects/domains/NDelius/servers/AdminServer/logs/access.log]
+file = /u01/app/oracle/middleware/user_projects/domains/NDelius/servers/AdminServer/logs/access.log
+log_group_name = {{ cldwatch_log_group }}
+log_stream_name = {{ hostname }}/access_log
+datetime_format = %b %d %H:%M:%S
+
+{%   endif -%}
+{%   if ansible_env.HMPPS_ROLE == 'ldap' -%}
+
+[/var/lib/apacheds-2.0.0.AM25/default/log/wrapper.log]
+file = /var/lib/apacheds-2.0.0.AM25/default/log/wrapper.log
+log_group_name = {{ cldwatch_log_group }}
+log_stream_name = {{ hostname }}/wrapper_log
+datetime_format = %b %d %H:%M:%S
+
 {%   endif -%}
 {% endif %}
