@@ -65,7 +65,7 @@ log_stream_name = {{ hostname }}/manager_log
 datetime_format = %b %d %H:%M:%S
 
 {%   endif -%}
-{%   if ansible_env.HMPPS_ROLE == 'ndelius' or ansible_env.HMPPS_ROLE == 'spg' or ansible_env.HMPPS_ROLE == 'interfaces' -%}
+{%   if ansible_env.HMPPS_ROLE in ['ndelius', 'spg', 'interfaces'] -%}
 
 [/u01/app/oracle/middleware/user_projects/domains/NDelius/NDeliusLog.log]
 file = /u01/app/oracle/middleware/user_projects/domains/NDelius/NDeliusLog.log
