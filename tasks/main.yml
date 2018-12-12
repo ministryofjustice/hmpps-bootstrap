@@ -3,6 +3,14 @@
 - name: Set ec2 facts
   include: facts.yml
 
+# This is post kernel upgrade, will add it to the centos base ami builder
+- name: Ensure we don't have reference to ptrace in our sysctl.conf
+  lineinfile:
+    path: /etc/sysctl.conf
+    regexp: "kernel.yama.ptrace_scope="
+    state: absent
+  become: true
+
 - name: Enable epel repository
   include: epel-repository.yml
 
