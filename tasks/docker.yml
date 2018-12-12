@@ -87,11 +87,11 @@
     mode: +x
   become: true
  
-- name: Set yama ptrace to old defaults
-  sysctl:
-    name: kernel.yama.ptrace_scope
-    value: 0
-    state: present
+- name: Ensure we don't have reference to ptrace in our sysctl.conf
+  lineinfile:
+    path: /etc/sysctl.conf
+    regexp: "kernel.yama.ptrace_scope="
+    state: absent
   become: true
   
 - name: Set our max_map_count
@@ -120,8 +120,11 @@
 - name: Ensure our docker data dir exists
   file:
     state: directory
-    path: "{{ docker_data_root|default('/srv/docker') }}"
+    path: "{{ item }}"
   become: true
+  with_items:
+    - "{{ docker_data_root|default('/srv/docker') }}"
+    - /etc/docker
 
 - name: Create our docker config file
   template:
