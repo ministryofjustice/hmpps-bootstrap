@@ -87,13 +87,6 @@
     mode: +x
   become: true
  
-- name: Ensure we don't have reference to ptrace in our sysctl.conf
-  lineinfile:
-    path: /etc/sysctl.conf
-    regexp: "kernel.yama.ptrace_scope="
-    state: absent
-  become: true
-  
 - name: Set our max_map_count
   sysctl:
     name: vm.max_map_count
