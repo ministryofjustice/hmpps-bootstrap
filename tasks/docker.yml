@@ -60,7 +60,7 @@
     append: true
   become: true
   when:
-    - uid_data.ansible_facts.changed
+    - uid_data.changed
     - uid_data.ansible_facts.getent_passwd.keys().0|default(false)
 
 - name: Get our user with name of hmpps_sys_user
@@ -77,7 +77,7 @@
     append: true
   become: true
   when:
-    - uid_data.ansible_facts.changed
+    - uid_data.changed
     - uid_data.ansible_facts.getent_passwd.keys().0|default(false)
 
 - name: Install docker-compose binary
@@ -87,6 +87,13 @@
     mode: +x
   become: true
  
+- name: Set yama ptrace to old defaults
+  sysctl:
+    name: kernel.yama.ptrace_scope
+    value: 0
+    state: present
+  become: true
+  
 - name: Set our max_map_count
   sysctl:
     name: vm.max_map_count
