@@ -50,6 +50,7 @@
   getent:
     database: passwd
     key: 1000
+    fail_key: false #To make this idempotent after bootstrapping users
   register: uid_data
 
 - name: Allow our user to run docker without sudo
@@ -58,7 +59,9 @@
     groups: docker
     append: true
   become: true
-  when: uid_data.ansible_facts.getent_passwd.keys().0|default(false)
+  when:
+    - uid_data.ansible_facts.changed
+    - uid_data.ansible_facts.getent_passwd.keys().0|default(false)
 
 - name: Get our user with name of hmpps_sys_user
   getent:
@@ -73,7 +76,9 @@
     groups: docker
     append: true
   become: true
-  when: uid_data.ansible_facts.getent_passwd.keys().0|default(false)
+  when:
+    - uid_data.ansible_facts.changed
+    - uid_data.ansible_facts.getent_passwd.keys().0|default(false)
 
 - name: Install docker-compose binary
   get_url:
@@ -81,7 +86,7 @@
     dest: /usr/bin/docker-compose
     mode: +x
   become: true
-
+ 
 - name: Set our max_map_count
   sysctl:
     name: vm.max_map_count
