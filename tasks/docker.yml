@@ -60,7 +60,6 @@
     append: true
   become: true
   when:
-    - uid_data.changed
     - uid_data.ansible_facts.getent_passwd.keys().0|default(false)
 
 - name: Get our user with name of hmpps_sys_user
@@ -77,7 +76,6 @@
     append: true
   become: true
   when:
-    - uid_data.changed
     - uid_data.ansible_facts.getent_passwd.keys().0|default(false)
 
 - name: Install docker-compose binary
