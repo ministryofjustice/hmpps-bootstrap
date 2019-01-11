@@ -64,6 +64,12 @@ log_group_name = {{ cldwatch_log_group }}
 log_stream_name = {{ hostname }}/manager_log
 datetime_format = %b %d %H:%M:%S
 
+[/usr/share/tomcat/alfresco.log]
+file = /usr/share/tomcat/alfresco.log
+log_group_name = {{ cldwatch_log_group }}
+log_stream_name = {{ hostname }}/alfresco_log
+datetime_format = %b %d %H:%M:%S
+
 {%   endif -%}
 {%   if ansible_env.HMPPS_ROLE in ['ndelius', 'spg', 'interfaces'] -%}
 
