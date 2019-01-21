@@ -55,12 +55,12 @@
 
 - name: Allow our user to run docker without sudo
   user:
-    name: "{{ uid_data.ansible_facts.getent_passwd.keys().0 }}"
+    name: "{{ uid_data.ansible_facts.getent_passwd.values().0 }}"
     groups: docker
     append: true
   become: true
   when:
-    - uid_data.ansible_facts.getent_passwd.keys().0|default(false)
+    - uid_data.ansible_facts.getent_passwd.values().0|default(False) != None
 
 - name: Get our user with name of hmpps_sys_user
   getent:
