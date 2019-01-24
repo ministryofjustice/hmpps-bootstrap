@@ -52,6 +52,7 @@
     key: 1000
     fail_key: false #To make this idempotent after bootstrapping users
   register: uid_data
+  ignore_errors: true
 
 - name: Allow our user to run docker without sudo
   user:
@@ -61,6 +62,7 @@
   become: true
   when:
     - uid_data.ansible_facts.getent_passwd.values().0|default(False) != None
+  ignore_errors: true
 
 - name: Get our user with name of hmpps_sys_user
   getent:
