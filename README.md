@@ -22,6 +22,7 @@ Role Variables
  - `lv_name` = logical volume name
  - `lv_size` = volume size see `man lvcreate`
  - `lvm_disks` = list of disks to consume in lvm creation
+ - `remove_password_rules` = to disable password expiry, default true
 
 
 Example Playbook
