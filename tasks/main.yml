@@ -11,6 +11,12 @@
     state: absent
   become: true
 
+- name: Remove our password expiry age rules
+  include: password-age.yml
+  when: remove_password_rules|default(true)
+  tags:
+    - password
+
 - name: Enable epel repository
   include: epel-repository.yml
 
