@@ -5,6 +5,6 @@
     state: latest
     name: "{{ item }}"
   with_items:
-    - vim
-    - jq
-    - awscli
+    - vim # yum hmpps-base-packer/ansible/group_vars/centos7
+    #- jq # yum hmpps-base-packer/ansible/group_vars/centos7
+    #- awscli #pip /hmpps-base-packer/scripts/ansible_galaxy_base.sh
