@@ -2,7 +2,7 @@
 
 - name: Define our max swap file size if not passed into the system
   set_fact:
-    max_swapfile_size: 2147483648 # 2 Gigs in Kilobytes WRONG!!!! it's 2048 GB
+    max_swapfile_size: 16777216 #16 Gigs in Kilobytes
     #max_swapfile_size: 2097152 # 2 Gigs in Kilobytes
   when: max_swapfile_size|default(false) == false
 
@@ -23,8 +23,7 @@
 - block:
     - debug: msg="Memory is less than or equal to {{ max_swapfile_size }}MB or {{ (max_swapfile_size|int / (1024|pow(2))) | round(2, 'ceil') }} GB"
     - name: Create the file to be used for swap when memory is less than or equal to max swapfile size
-      #command: dd if=/dev/zero of="{{ swapfile }}" bs=1024 count="{{ memory_facts.stdout }}"
-      command: fallocate -l "{{ (memory_facts.stdout|int / (1024|pow(2))) | round(0, 'ceil') | int  }}G" "{{ swapfile }}"
+      command: dd if=/dev/zero of="{{ swapfile }}" bs=1024 count="{{ memory_facts.stdout }}"
   when: memory_facts.stdout|int <= max_swapfile_size
 
 - block:
