@@ -24,7 +24,7 @@
     - debug: msg="Memory is less than or equal to {{ max_swapfile_size }}MB or {{ (max_swapfile_size|int / (1024|pow(2))) | round(2, 'ceil') }} GB"
     - name: Create the file to be used for swap when memory is less than or equal to max swapfile size
       #command: dd if=/dev/zero of="{{ swapfile }}" bs=1024 count="{{ memory_facts.stdout }}"
-      command: fallocate -l "{{ (memory_facts.stdout|int / (1024|pow(2))) | round(0, 'ceil') | int  }}" "{{ swapfile }}"
+      command: fallocate -l "{{ (memory_facts.stdout|int / (1024|pow(2))) | round(0, 'ceil') | int  }}G" "{{ swapfile }}"
   when: memory_facts.stdout|int <= max_swapfile_size
 
 - block:
