@@ -77,5 +77,8 @@
     - name: Mount our efs share
       include: efs.yml
       when:
-        - efs_mount_dir|default(False)
-        - efs_file_system_id|default(False)
+        - efs_mount_dir != ""
+        - efs_file_system_id != ""
+  when:
+    - efs_mount_dir|default(False)
+    - efs_file_system_id|default(False)
