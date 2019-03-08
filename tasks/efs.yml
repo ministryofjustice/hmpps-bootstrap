@@ -4,13 +4,14 @@
   yum:
     name: nfs-utils
     state: present
-    become: true
+  become: true
 
 - name: Ensure mount directory exists.
   file:
     path: "{{ efs_mount_dir }}"
     state: directory
     mode: 0777
+  become: true
 
 - name: Get current AZ from AWS.
   uri:
