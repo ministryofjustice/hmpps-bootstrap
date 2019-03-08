@@ -21,3 +21,13 @@
   args:
     warn: False
   become: true
+
+- name: Reset our mount dir permissions.
+  file:
+    path: "{{ efs_mount_dir }}"
+    state: directory
+    mode: 0777
+    owner: hmpps_sys_user
+    group: hmpps_sys_user
+    recurse: true
+  become: true
