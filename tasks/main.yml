@@ -72,3 +72,13 @@
 
 - name: Enable some maintenance crons
   include: crons.yml
+
+- block:
+    - name: Mount our efs share
+      include: efs.yml
+      when:
+        - efs_mount_dir != ""
+        - efs_file_system_id != ""
+  when:
+    - efs_mount_dir|default(False)
+    - efs_file_system_id|default(False)

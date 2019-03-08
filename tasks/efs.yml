@@ -1,0 +1,33 @@
+---
+
+- name: Ensure NFS is installed.
+  yum:
+    name: nfs-utils
+    state: present
+  become: true
+
+- name: Ensure mount directory exists.
+  file:
+    path: "{{ efs_mount_dir }}"
+    state: directory
+    mode: 0777
+  become: true
+
+- name: Mount the share
+  command: "mount -t nfs4 -o
+            nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport
+            {{ efs_file_system_id }}.efs.{{ region }}.amazonaws.com:/
+            {{ efs_mount_dir }}"
+  args:
+    warn: False
+  become: true
+
+- name: Reset our mount dir permissions.
+  file:
+    path: "{{ efs_mount_dir }}"
+    state: directory
+    mode: 0777
+    owner: hmpps_sys_user
+    group: hmpps_sys_user
+    recurse: true
+  become: true
