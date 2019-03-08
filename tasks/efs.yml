@@ -13,16 +13,11 @@
     mode: 0777
   become: true
 
-- name: Get current AZ from AWS.
-  uri:
-    url: http://169.254.169.254/latest/meta-data/placement/availability-zone
-    return_content: yes
-  register: aws_current_az
-
-- name: Ensure EFS volume is mounted.
-  mount:
-    name: "{{ efs_mount_dir }}"
-    src: "{{ aws_current_az.content }}.{{ efs_file_system_id }}.efs.{{ region }}.amazonaws.com:/"
-    fstype: nfs4
-    opts: nfsvers=4.1
-    state: mounted
+- name: Mount the share
+  command: "mount -t nfs4 -o
+            nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport
+            {{ efs_file_system_id }}.efs.{{ region }}.amazonaws.com:/
+            {{ efs_mount_dir }}"
+  args:
+    warn: False
+  become: true
