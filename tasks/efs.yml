@@ -20,6 +20,10 @@
             {{ efs_mount_dir }}"
   args:
     warn: False
+  register: mount_result
+  retries: 5
+  delay: 60
+  until: mount_result.rc == 0
   become: true
 
 - name: Reset our mount dir permissions.
