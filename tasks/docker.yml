@@ -80,6 +80,22 @@
   when:
     - uid_data.ansible_facts.getent_passwd.keys().0|default(false)
 
+- name: Get our user with name of centos
+  getent:
+    database: passwd
+    key: centos
+    fail_key: false
+  register: uid_data
+
+- name: Allow our user to run docker without sudo
+  user:
+    name: "{{ uid_data.ansible_facts.getent_passwd.keys().0 }}"
+    groups: docker
+    append: true
+  become: true
+  when:
+    - uid_data.ansible_facts.getent_passwd.keys().0|default(false)
+
 - name: Install docker-compose binary
   get_url:
     url: https://github.com/docker/compose/releases/download/1.21.2/docker-compose-Linux-x86_64
@@ -109,6 +125,20 @@
     limit_item: nofile
     value: 65536
   become: true
+
+- name: Ensure we forwarding on networking
+  sysctl:
+    name: "{{ item }}"
+    value: 1
+    state: present
+    sysctl_file: /etc/sysctl.conf
+    sysctl_set: yes
+    reload: yes
+  become: true
+  with_items:
+    - "net.ipv4.conf.all.forwarding"
+    - "net.ipv6.conf.all.forwarding"
+    - "net.ipv4.ip_forward"
 
 - name: Ensure our docker data dir exists
   file:
@@ -143,4 +173,3 @@
     name: docker
     state: restarted
   become: true
-
