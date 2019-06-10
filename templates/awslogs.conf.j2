@@ -95,4 +95,17 @@ log_stream_name = {{ hostname }}/wrapper_log
 datetime_format = %Y/%m/%d %H:%M:%S
 
 {%   endif -%}
+{%   if ansible_env.HMPPS_ROLE == 'management-server' -%}
+
+[training_script_logs]
+file = /u01/training/log/*
+log_group_name = {{ cldwatch_log_group }}
+log_stream_name = {{ hostname }}/training_script_logs
+
+[app_script_logs]
+file = /u01/app/log/*
+log_group_name = {{ cldwatch_log_group }}
+log_stream_name = {{ hostname }}/app_script_logs
+
+{%   endif -%}
 {% endif %}
