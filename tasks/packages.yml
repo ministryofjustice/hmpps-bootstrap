@@ -6,3 +6,4 @@
     name: "{{ item }}"
   with_items:
     - vim # yum hmpps-base-packer/ansible/group_vars/centos7
+    - bzip2 # added here for expediency
