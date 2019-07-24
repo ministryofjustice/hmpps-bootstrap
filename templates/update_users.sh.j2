@@ -2,8 +2,24 @@
 
 set +x
 
+yum -y install jq
+
+Get instance ID:
+INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
+
+Get region:
+REGION=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r .region)
+
+BASTION_INVENTORY = $(aws ec2 describe-tags --filters "Name=resource-id,Values=$INSTANCE_ID" --region=$REGION --output=text --query 'Tags[?Key==`bastion_inventory`].Value')
+
+if [ -z "${BASTION_INVENTORY}" ]
+then
+    echo "BASTION_INVENTORY tag not found"
+    exit 1
+fi
+
 cd /tmp
-wget https://raw.githubusercontent.com/ministryofjustice/hmpps-delius-ansible/master/group_vars/{{ remote_user_filename|default('dev.yml') }} -O /tmp/users.yml
+wget https://raw.githubusercontent.com/ministryofjustice/hmpps-delius-ansible/master/group_vars/${BASTION_INVENTORY}.yml -O /tmp/users.yml
 
 cat << EOF > /tmp/requirements.yml
 ---
