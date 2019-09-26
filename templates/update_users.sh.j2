@@ -3,7 +3,7 @@
 set +x
 
 cd /tmp
-wget https://raw.githubusercontent.com/ministryofjustice/hmpps-delius-ansible/master/group_vars/{{ remote_user_filename|default('dev.yml') }} -O /tmp/users.yml
+wget https://raw.githubusercontent.com/ministryofjustice/hmpps-delius-ansible/master/group_vars/{{ remote_user_filename|default('prod') }}.yml -O /tmp/users.yml
 
 cat << EOF > /tmp/requirements.yml
 ---
