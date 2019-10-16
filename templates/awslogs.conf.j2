@@ -109,11 +109,11 @@ datetime_format = %Y-%b-%d %H:%M:%S,%f
 {%   endif -%}
 {%   if ansible_env.HMPPS_ROLE == 'ldap' -%}
 
-[/var/lib/apacheds-2.0.0.AM25/default/log/wrapper.log]
-file = /var/lib/apacheds-2.0.0.AM25/default/log/wrapper.log
+[/var/log/slapd.log]
+file = /var/log/slapd.log
 log_group_name = {{ cldwatch_log_group }}
-log_stream_name = {{ hostname }}/wrapper_log
-datetime_format = %Y/%m/%d %H:%M:%S
+log_stream_name = {{ hostname }}/slapd_log
+datetime_format = %d-%m-%Y %H:%M:%S
 
 {%   endif -%}
 {%   if ansible_env.HMPPS_ROLE == 'management-server' -%}
