@@ -23,6 +23,7 @@ Role Variables
  - `lv_size` = volume size see `man lvcreate`
  - `lvm_disks` = list of disks to consume in lvm creation
  - `remove_password_rules` = to disable password expiry, default true
+ - `remote_user_filename` = bastion_inventory either ( dev | prod )
 
 
 Example Playbook
@@ -61,7 +62,7 @@ Including an example of how to use your role (for instance, with variables passe
 
 ```yaml
     ---
-    
+
     - hosts: localhost
       roles:
          - bootstrap
@@ -76,4 +77,3 @@ License
 -------
 
 MIT
-

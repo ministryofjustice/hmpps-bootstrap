@@ -19,7 +19,7 @@ then
 fi
 
 cd /tmp
-wget https://raw.githubusercontent.com/ministryofjustice/hmpps-delius-ansible/master/group_vars/${BASTION_INVENTORY}.yml -O /tmp/users.yml
+wget https://raw.githubusercontent.com/ministryofjustice/hmpps-delius-ansible/master/group_vars/{{ remote_user_filename|default('prod') }}.yml -O /tmp/users.yml
 
 cat << EOF > /tmp/requirements.yml
 ---
@@ -36,6 +36,8 @@ cat << EOF > /tmp/playbook.yml
    - /tmp/users.yml
   roles:
      - users
+  gather_subset:
+     - min
 EOF
 
 ansible-galaxy install -r requirements.yml -f
