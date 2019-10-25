@@ -36,6 +36,8 @@ cat << EOF > /tmp/playbook.yml
    - /tmp/users.yml
   roles:
      - users
+  gather_subset:		
+     - min
 EOF
 
 ansible-galaxy install -r requirements.yml -f
