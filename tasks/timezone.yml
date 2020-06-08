@@ -7,7 +7,7 @@
 - name: Configure chrony to use the AWS time server
   template:
     src: chrony.conf.j2
-    dest: chrony.conf
+    dest: /etc/chrony.conf
   become: true
 
 - name: Restart chrony service
