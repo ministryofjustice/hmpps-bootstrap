@@ -31,7 +31,7 @@
     path: "{{ efs_mount_dir }}"
     state: directory
     mode: 0777
-    owner: hmpps_sys_user
+    owner: {{ efs_mount_user|default('hmpps_sys_user') }}
     group: hmpps_sys_user
     recurse: true
   become: true

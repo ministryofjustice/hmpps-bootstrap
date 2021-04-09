@@ -82,3 +82,4 @@
   when:
     - efs_mount_dir|default(False)
     - efs_file_system_id|default(False)
+    - efs_mount_user|default(False)
