@@ -1,37 +1,27 @@
 ---
 
-- name: Ensure NFS is installed.
-  yum:
-    name: nfs-utils
-    state: present
-  become: true
-
-- name: Ensure mount directory exists.
+- name: Create mount directory
+  become: yes
   file:
     path: "{{ efs_mount_dir }}"
     state: directory
-    mode: 0777
-  become: true
-
-- name: Mount the share
-  command: "mount -t nfs4 -o
-            nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport
-            {{ efs_file_system_id }}.efs.{{ region }}.amazonaws.com:/
-            {{ efs_mount_dir }}"
-  args:
-    warn: False
-  register: mount_result
-  retries: 5
-  delay: 60
-  until: mount_result.rc == 0
-  become: true
-
-- name: Reset our mount dir permissions.
-  file:
-    path: "{{ efs_mount_dir }}"
-    state: directory
-    mode: 0777
     owner: "{{ efs_mount_user|default('hmpps_sys_user') }}"
-    group: hmpps_sys_user
-    recurse: true
-  become: true
+    group: "{{ efs_mount_user|default('hmpps_sys_user') }}"
+
+- name: Update mount directory permissions
+  become: yes
+  file:
+    path: "{{ efs_mount_dir }}"
+    owner: "{{ efs_mount_user|default('hmpps_sys_user') }}"
+    group: "{{ efs_mount_user|default('hmpps_sys_user') }}"
+    mode: 0755
+    recurse: yes
+
+- name: Mount Dir on EFS Volume
+  become: yes
+  mount:
+    path: "{{ efs_mount_dir }}"
+    src: "{{ jira_data_volume_id }}"
+    fstype: efs
+    opts: tls
+    state: mounted
