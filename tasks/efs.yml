@@ -21,7 +21,7 @@
   become: yes
   mount:
     path: "{{ efs_mount_dir }}"
-    src: "{{ jira_data_volume_id }}"
+    src: "{{ efs_file_system_id }}"
     fstype: efs
     opts: tls
     state: mounted
